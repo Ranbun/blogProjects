@@ -1,6 +1,9 @@
 #ifndef BIT_MANIPULATION_H
 #define BIT_MANIPULATION_H
 
+
+#include <array>
+
 namespace BIT_M
 {
 
@@ -42,27 +45,51 @@ namespace BIT_M
         }
 
 
+        // 效率较低 - 可以优化 
         static void showBinary(int d)
         {
             using std::cout;
             using std::endl;
+            using std::array;
+
+            array<int, 32> num;
 
             int flag = 1;
-            for (int i = 31; i >= 0 ; i--)
+            for (int i = 31; i >= 0; i--)
             {
                 auto da = d & flag;
                 if (d & flag)
                 {
-                    cout << 1;
+                    num[i] = 1;
                 }
                 else
                 {
-                    cout << 0;
+                    num[i] = 0;
                 }
 
-                flag <<= 1;
+                flag = flag << 1;
             }
 
+
+            // 查找第一个不是零的数 
+            int index = 0;
+            for (auto i = 0; i < num.size(); i++)
+            {
+                if (num[i] != 0)
+                {
+
+                    i == 0 ? index = i : index = i - 1;
+                    break;
+                }
+            }
+
+
+            // 输出转换结果
+            for (auto i = index; i < num.size(); i++)
+            {
+                cout << num[i];
+
+            }
             cout << endl;
         }
 
