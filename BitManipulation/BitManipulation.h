@@ -16,21 +16,48 @@ namespace BIT_M
 
 
         // 某一位设置为 1
-        T setBit2One(T, int bits)
+        T setBit2One(T d, int bits)
         {
-
+            BitManipulate::showBinary(static_cast<int>(d));
+            // | 运算: 只要有一个是1 结果都是1
+            d = d | (1 << (bits - 1));
+            BitManipulate::showBinary(static_cast<int>(d));
+            return d;
         }
 
         // 某一位设置为 0
-        T setBit2Zero(T, int bits)
+        T setBit2Zero(T d, int bits)
         {
+            BitManipulate::showBinary(static_cast<int>(d));
+            // 取反是一个只和取反位数以及之后所有位数相关的操作
+            // 二进制的位数从0开始计算 所以需要 -1 
+            // 1 << (bits(3) - 1) = 4 = 0100 
+            // ~4 = 1011
+            // & 同为 1 则为 1
+            d = d & (~(1 << (bits - 1)));
+
+            BitManipulate::showBinary(static_cast<int>(d));
+            return d;
 
         }
 
         // 某一位取反
-        T setBit2Negate(T, int bits)
+        T setBit2Negate(T d, int bits)
         {
+            BitManipulate::showBinary(static_cast<int>(d));
+            
+            // 转换过程
+            // ^ 异或运算 1 ^ 0 == 1 / 0 ^ 1 == 1  其余的情况都是 0 
+            // d(15) == 1111 bits = 3
+            // 1 << bits - 1 == 0100
+            // 1111
+            // 0100 ^
+            // 1011 
 
+            d = d ^ (1 << (bits - 1));
+
+            BitManipulate::showBinary(static_cast<int>(d));
+            return d;
         }
 
 
