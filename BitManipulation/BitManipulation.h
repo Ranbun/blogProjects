@@ -81,6 +81,7 @@ namespace BIT_M
 
             array<int, 32> num;
 
+            num.fill(0);
             int flag = 1;
             for (int i = 31; i >= 0; i--)
             {
