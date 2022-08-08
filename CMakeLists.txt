@@ -7,5 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 add_subdirectory(BitManipulation)
 add_subdirectory(smartPointer)
+add_subdirectory(extern_c)
 
 
