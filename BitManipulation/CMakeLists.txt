@@ -13,4 +13,5 @@ set(sources_file
 
 add_executable(${project_name} 
                ${sources_file}
-               ${headers})
+               ${headers}
+)
