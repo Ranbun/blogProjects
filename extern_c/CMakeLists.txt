@@ -1,18 +1,17 @@
-set(target_name extern_c)
+set(target_name keyWordsExtern)
 project(${target_name})
 
 
-set(cpp_files
-
-    main.cpp 
-    extern_test.cpp
+set(CPPFiles
+    main.cpp
+    KeyWordsExtern.cpp
 )
 
-set(header_files
-    extern_test.h 
-    test.h
+set(HeaderFiles
+    KeyWordsExtern.h
+    TestExtern.h
 
 )
 
+add_executable(${target_name}  ${CPPFiles} ${HeaderFiles})
 
-add_executable(${target_name}  ${cpp_files} ${header_files})

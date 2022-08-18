@@ -1,12 +1,12 @@
 #include <iostream>
-#include "test.h"
-#include "extern_test.h"
+#include "TestExtern.h"
+#include "KeyWordsExtern.h"
 
 using namespace std;
 
 int main()
 {
-    foo();
-    std::cout<<add(10, 30)<<std::endl;
+    printExternVar();
+    std::cout<<"add result: "<<add(10, 30)<<std::endl;
     return 0;
 }
