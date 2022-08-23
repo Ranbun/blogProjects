@@ -3,6 +3,7 @@
 
 
 #include <array>
+#include <iostream>
 
 namespace BIT_M
 {
@@ -110,7 +111,6 @@ namespace BIT_M
                     break;
                 }
             }
-
 
             // 输出转换结果
             for (auto i = index; i < num.size(); i++)
