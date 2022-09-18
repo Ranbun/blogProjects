@@ -32,7 +32,7 @@ class Student : public Person
 
 public:
     Student()
-        :Student("stu")
+        :Person("stu")
     {
 
     }
@@ -69,7 +69,11 @@ class Author :public Student, public Teacher
 {
 
 public:
-
+    Author()
+    {
+        Student::name_ = "";
+        Teacher::name_ = "";
+    }
 
 
 
