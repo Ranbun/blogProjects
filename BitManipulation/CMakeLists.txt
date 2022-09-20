@@ -8,7 +8,7 @@ set(headers
 set(sources_file
     BitManipulation.cpp
     main.cpp
-        ../effectiveC++/main.cpp)
+)
 
 
 add_executable(${project_name} 

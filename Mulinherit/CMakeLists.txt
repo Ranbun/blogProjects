@@ -8,7 +8,7 @@ set(CPPFiles
 )
 
 set(HeaderFiles
-    Person.h
+    Person.cpp
 )
 
 add_executable(${target_name} ${CPPFiles} ${HeaderFiles})
