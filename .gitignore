@@ -24,5 +24,7 @@ cmake-build-debug/
 .idea
 .idea/
 
+*.obj
+
 
 
