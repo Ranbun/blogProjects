@@ -12,12 +12,15 @@ _deps
 
 build-BitManipulation-Desktop_Qt_5_15_2_MSVC2019_64bit-Debug/
 build-BitManipulation-Desktop_Qt_5_15_2_MSVC2019_64bit-Debug
+
 .vs 
 .vs/
 out/
 out
+
 cmake-build-debug
 cmake-build-debug/
+
 .idea
 .idea/
 
