@@ -9,6 +9,8 @@ add_subdirectory(BitManipulation)
 add_subdirectory(smartPointer)
 add_subdirectory(extern_c)
 add_subdirectory(Mulinherit)
+add_subdirectory(Singleton)
 add_subdirectory(effectiveC++)
+add_subdirectory(Factory)
 
 
