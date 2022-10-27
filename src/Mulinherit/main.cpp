@@ -1,8 +1,9 @@
 #include <iostream>
-#include "Person.h"
+#include "Person.cpp"
 
 void main()
 {
-    std::cout << "hello world" << std::endl;
-
+    auto test = new Author("test");
+    delete test;
+    test = nullptr;
 }

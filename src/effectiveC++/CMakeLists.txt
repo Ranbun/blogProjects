@@ -8,6 +8,7 @@ set(CPPFiles
         )
 
 set(HeaderFiles
-        prue_virtual_class.h)
+        prue_virtual_class.h
+)
 
 add_executable(${target_name} ${CPPFiles} ${HeaderFiles})
