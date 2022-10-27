@@ -1,9 +1,12 @@
 #include <iostream>
-#include "Person.cpp"
+#include "Person.h"
 
-void main()
+int main()
 {
-    auto test = new Author("test");
+
+    auto test = new Author;
     delete test;
     test = nullptr;
+    return 0;
+
 }

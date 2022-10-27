@@ -3,13 +3,12 @@ project(${target_name})
 
 
 set(CPPFiles
-        main.cpp
+    main.cpp
    
 )
 
 set(HeaderFiles
-    Person.cpp
-        Person.h
+    Person.h
 )
 
 add_executable(${target_name} ${CPPFiles} ${HeaderFiles})

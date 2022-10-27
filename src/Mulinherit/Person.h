@@ -75,16 +75,6 @@ public:
         Teacher::name_ = "";
     }
 
-
-
-
 };
-
-
-
-
-
-
-
 
 #endif 
