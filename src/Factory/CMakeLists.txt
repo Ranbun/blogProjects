@@ -1,14 +1,14 @@
 set(project_name factory)
 project(${project_name})
 
-set(headers 
-    Product.h
-    Factory.h
-    concreteFactory.h
+set(headers
+        Product.h
+        Factory.h
+        concreteFactory.h
 )
 
 set(sources_file
-    main.cpp
+        main.cpp
 )
 
 

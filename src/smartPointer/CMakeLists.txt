@@ -1,16 +1,16 @@
-set(project_name Singleton)
+set(project_name smartpointer)
 project(${project_name})
 
 set(headers 
-
-     "Singleton.h")
+    
+)
 
 set(sources_file
-    main.cpp
+        main.cpp
 )
 
 
 add_executable(${project_name} 
                ${sources_file}
-               ${headers}
+#               ${headers}
 )
