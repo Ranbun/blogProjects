@@ -25,17 +25,13 @@ class WindowManager
 {
 public:
     WindowManager()
-    {
-
-    }
+    = default;
     ~WindowManager()
-    {
-
-    }
+    = default;
 
     static HWND createWin32Window()
     {
-        const wchar_t CLASS_NAME[]  = L"Sample Window Class";
+        [[maybe_unused]] const wchar_t CLASS_NAME[]  = L"Sample Window Class";
         WNDCLASS wc = { 0 };
         wc.lpfnWndProc   = WndProc;
         wc.cbClsExtra = sizeof(wc);
@@ -47,7 +43,7 @@ public:
             assert(false);
         }
 
-        auto hwnd =  CreateWindow("OpenGL Text Window","OpenGL Text Window",WS_OVERLAPPEDWINDOW,100,100,640,480,NULL,NULL,NULL,NULL);
+        auto hwnd =  CreateWindow("OpenGL Text Window","OpenGL Text Window",WS_OVERLAPPEDWINDOW,100,100,640,480,nullptr,nullptr,nullptr,nullptr);
 
         if (!hwnd)
         {
