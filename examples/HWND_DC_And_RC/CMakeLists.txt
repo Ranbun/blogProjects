@@ -15,4 +15,7 @@ ADD_EXECUTABLE(
         ${sources}
 )
 
+target_link_libraries(
+        ${target_}  PRIVATE opengl32
+)
 
