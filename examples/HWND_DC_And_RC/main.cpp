@@ -1,5 +1,5 @@
 #include <windows.h>
-//#include <glad/glad.h>
+#include <glad/glad.h>
 #include <GL/gl.h>
 #include <iostream>
 
@@ -126,12 +126,19 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
 
 int main()
 {
+
+    auto glInst = LoadLibraryA("opengl32.dll");
+    if (glInst == NULL)
+    {
+        return -1;
+    }
+
     HDC hDC;				/* device context */
     HGLRC hRC;				/* opengl context */
     HWND  hWnd;				/* window */
     MSG   msg;				/* message */
 
-    hWnd = CreateOpenGLWindow("minimal", 100, 100, 640, 480, PFD_TYPE_RGBA, 0);
+    hWnd = CreateOpenGLWindow("OpenGL", 100, 100, 640, 480, PFD_TYPE_RGBA, 0);
     if (hWnd == NULL)
         exit(1);
 
@@ -141,14 +148,29 @@ int main()
 
     ShowWindow(hWnd, SW_SHOW);
 
+
+
+
+#if  0
     // debug load OpenGL Functions
-    // auto func_ret = wglGetProcAddress("glGenBuffers");
-    // if(func_ret = nullptr)
+    auto func_ret = wglGetProcAddress("glGenBuffers");
+
+    if(func_ret == nullptr)
     {
-//        func_ret = GetProcAddress()
+        // func_ret = GetProcAddress()
         putchar(10);
     }
 
+    int vao;
+    glGenVertexArrays(1, reinterpret_cast<GLuint *>(&vao));
+
+        auto glModleInst = glInst;
+    if (GLADloadproc("glGenBuffers") == 0)
+    {
+        return -1;
+    }
+
+#endif
 
     std::cout<<glGetString(GL_VERSION)<<std::endl;
 
