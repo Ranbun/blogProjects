@@ -9,6 +9,8 @@ SET(sources
         )
 
 
+FIND_PACKAGE(glad CONFIG REQUIRED)
+
 ADD_EXECUTABLE(
         ${target_}
         ${headers}
@@ -16,6 +18,6 @@ ADD_EXECUTABLE(
 )
 
 target_link_libraries(
-        ${target_}  PRIVATE opengl32
+        ${target_}  PRIVATE opengl32 glad::glad
 )
 
