@@ -1,12 +1,26 @@
 #include <windows.h>
-//#include <glad/glad.h>
+#include <glad/glad.h>
 #include <GL/gl.h>
 #include <iostream>
+#include "triangle.h"
 
-//typedef void* (* GLADloadproc)(const char *name);
+HMODULE glModleInst;
+HMODULE glInst;
+
+// load gl function
+static void* cWGLGetProcAddr(const char *name)
+{
+    auto ret = wglGetProcAddress(name);
+    if (ret == NULL)
+    {
+        ret = GetProcAddress(glModleInst, name);
+    }
+    return ret;
+}
 
 void display()
 {
+#if  0
     /* rotate a triangle around */
     glClearColor(0.3,0.4,0.4,1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -19,6 +33,8 @@ void display()
     glVertex3f(1, -1,0.0);
     glEnd();
     glFlush();
+#endif 
+
 }
 
 
@@ -66,8 +82,8 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
 
     /* only register the window class once - use hInstance as a flag. */
     if (!hInstance) {
-        hInstance = GetModuleHandle(NULL);
-        wc.style         = CS_OWNDC;
+        hInstance = GetModuleHandle(NULL);  // 应用程序实例句柄
+        wc.style         = CS_OWNDC;        // 为了保证每次获取的DC是同一个 
         wc.lpfnWndProc   = (WNDPROC)WindowProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
@@ -99,7 +115,7 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
 
     memset(&pfd, 0, sizeof(pfd));
     pfd.nSize        = sizeof(pfd);
-    pfd.nVersion     = 1;
+    pfd.nVersion     = 1;          
     pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | flags;
     pfd.iPixelType   = type;
     pfd.cColorBits   = 32;
@@ -131,7 +147,10 @@ int main()
     HWND  hWnd;				/* window */
     MSG   msg;				/* message */
 
-    hWnd = CreateOpenGLWindow("minimal", 100, 100, 640, 480, PFD_TYPE_RGBA, 0);
+    glInst = LoadLibraryA("opengl32.dll");
+    glModleInst = glInst;
+                          
+    hWnd = CreateOpenGLWindow("OpenGL Window", 100, 100, 640, 480, PFD_TYPE_RGBA, 0);
     if (hWnd == NULL)
         exit(1);
 
@@ -139,23 +158,27 @@ int main()
     hRC = wglCreateContext(hDC);
     wglMakeCurrent(hDC, hRC);
 
-    ShowWindow(hWnd, SW_SHOW);
-
     // debug load OpenGL Functions
-    // auto func_ret = wglGetProcAddress("glGenBuffers");
-    // if(func_ret = nullptr)
+    // 此函数必须等到上下文创建完成之后才可以调用 
+    // 必须在执行任何OpenGL代码之前调用相关的库函数 
+    if (gladLoadGLLoader(cWGLGetProcAddr) == 0)
     {
-//        func_ret = GetProcAddress()
-        putchar(10);
+        return -1;
     }
 
+    ShowWindow(hWnd, SW_SHOW);
 
+    // 获取OpenGL版本 
     std::cout<<glGetString(GL_VERSION)<<std::endl;
 
-    while(GetMessage(&msg, hWnd, 0, 0))
+    Triangle obj;
+    obj.create(hDC, hRC);
+
+    while(GetMessage(&msg, nullptr, 0, 0))
     {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
+        obj.draw();
     }
 
     wglMakeCurrent(NULL, NULL);
@@ -164,4 +187,4 @@ int main()
     DestroyWindow(hWnd);
 
     return msg.wParam;
-}
+}                                                    

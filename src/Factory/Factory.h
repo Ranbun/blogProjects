@@ -46,7 +46,7 @@ public:
     Factory() = default;
     ~Factory() = default;
 
-    virtual Product* crteateProduct() {};
+    virtual Product* crteateProduct() { return nullptr; };
 
 };
 

@@ -2,7 +2,7 @@ SET(target_ win32windows)
 
 SET(headers
         Win32WindowsManager.h
-        )
+        triangle.h)
 
 SET(sources
         main.cpp
@@ -18,6 +18,6 @@ ADD_EXECUTABLE(
 )
 
 target_link_libraries(
-        ${target_}  PRIVATE opengl32 glad::glad
+        ${target_}  PRIVATE  opengl32 glad::glad
 )
 
