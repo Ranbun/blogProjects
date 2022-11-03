@@ -1,12 +1,25 @@
-#include <windows.h>
+#include <Windows.h>
 #include <glad/glad.h>
-#include <GL/gl.h>
 #include <iostream>
+#include "triangle.h"
 
-//typedef void* (* GLADloadproc)(const char *name);
+HMODULE glModleInst;
+HMODULE glInst;
 
-void display()
+// load gl function
+static void* cWGLGetProcAddr(const char *name)
 {
+    auto ret = wglGetProcAddress(name);
+    if (ret == nullptr)
+    {
+        ret = GetProcAddress(glModleInst, name);
+    }
+    return ret;
+}
+
+[[maybe_unused]] void display()
+{
+#if  0
     /* rotate a triangle around */
     glClearColor(0.3,0.4,0.4,1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -19,6 +32,9 @@ void display()
     glVertex3f(1, -1,0.0);
     glEnd();
     glFlush();
+#endif
+    // gluSphere(NULL,10,1,2);
+
 }
 
 
@@ -28,7 +44,7 @@ LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     switch(uMsg) {
         case WM_PAINT:
-            display();
+            // display();
             BeginPaint(hWnd, &ps);
             EndPaint(hWnd, &ps);
             return 0;
@@ -42,15 +58,17 @@ LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 case 27:			/* ESC key */
                     PostQuitMessage(0);
                     break;
+                case 0:
+                    break;
             }
             return 0;
-
         case WM_CLOSE:
             PostQuitMessage(0);
             return 0;
-    }
 
-    return DefWindowProc(hWnd, uMsg, wParam, lParam);
+        default:
+            return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    }
 }
 
 HWND
@@ -62,59 +80,59 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
     HWND        hWnd;
     WNDCLASS    wc;
     PIXELFORMATDESCRIPTOR pfd;
-    static HINSTANCE hInstance = 0;
+    static HINSTANCE hInstance = nullptr;
 
     /* only register the window class once - use hInstance as a flag. */
     if (!hInstance) {
-        hInstance = GetModuleHandle(NULL);
-        wc.style         = CS_OWNDC;
+        hInstance = GetModuleHandle(nullptr);  // Ӧ�ó���ʵ�����
+        wc.style         = CS_OWNDC;        // Ϊ�˱�֤ÿ�λ�ȡ��DC��ͬһ�� 
         wc.lpfnWndProc   = (WNDPROC)WindowProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
         wc.hInstance     = hInstance;
-        wc.hIcon         = LoadIcon(NULL, IDI_WINLOGO);
-        wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-        wc.hbrBackground = NULL;
-        wc.lpszMenuName  = NULL;
+        wc.hIcon         = LoadIcon(nullptr, IDI_WINLOGO);
+        wc.hCursor       = LoadCursor(nullptr, IDC_ARROW);
+        wc.hbrBackground = nullptr;
+        wc.lpszMenuName  = nullptr;
         wc.lpszClassName = "OpenGL";
 
         if (!RegisterClass(&wc)) {
-            MessageBox(NULL, "RegisterClass() failed:  "
+            MessageBox(nullptr, "RegisterClass() failed:  "
                              "Cannot register window class.", "Error", MB_OK);
-            return NULL;
+            return nullptr;
         }
     }
 
     hWnd = CreateWindow("OpenGL", title, WS_OVERLAPPEDWINDOW |
                                          WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-                        x, y, width, height, NULL, NULL, hInstance, NULL);
+                        x, y, width, height, nullptr, nullptr, hInstance, nullptr);
 
-    if (hWnd == NULL) {
-        MessageBox(NULL, "CreateWindow() failed:  Cannot create a window.",
+    if (hWnd == nullptr) {
+        MessageBox(nullptr, "CreateWindow() failed:  Cannot create a window.",
                    "Error", MB_OK);
-        return NULL;
+        return nullptr;
     }
 
     hDC = GetDC(hWnd);
 
     memset(&pfd, 0, sizeof(pfd));
     pfd.nSize        = sizeof(pfd);
-    pfd.nVersion     = 1;
+    pfd.nVersion     = 1;          
     pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | flags;
     pfd.iPixelType   = type;
     pfd.cColorBits   = 32;
 
     pf = ChoosePixelFormat(hDC, &pfd);
     if (pf == 0) {
-        MessageBox(NULL, "ChoosePixelFormat() failed:  "
+        MessageBox(nullptr, "ChoosePixelFormat() failed:  "
                          "Cannot find a suitable pixel format.", "Error", MB_OK);
-        return 0;
+        return nullptr;
     }
 
     if (SetPixelFormat(hDC, pf, &pfd) == FALSE) {
-        MessageBox(NULL, "SetPixelFormat() failed:  "
+        MessageBox(nullptr, "SetPixelFormat() failed:  "
                          "Cannot set format specified.", "Error", MB_OK);
-        return 0;
+        return nullptr;
     }
 
     DescribePixelFormat(hDC, pf, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
@@ -138,52 +156,45 @@ int main()
     HWND  hWnd;				/* window */
     MSG   msg;				/* message */
 
-    hWnd = CreateOpenGLWindow("OpenGL", 100, 100, 640, 480, PFD_TYPE_RGBA, 0);
-    if (hWnd == NULL)
+    glInst = LoadLibraryA("opengl32.dll");
+    glModleInst = glInst;
+
+    char * windowName = "OpenGL Window";
+    hWnd = CreateOpenGLWindow(windowName, 100, 100, 640, 480, PFD_TYPE_RGBA, 0);
+    if (hWnd == nullptr)
         exit(1);
 
     hDC = GetDC(hWnd);
     hRC = wglCreateContext(hDC);
     wglMakeCurrent(hDC, hRC);
 
-    ShowWindow(hWnd, SW_SHOW);
-
-
-
-
-#if  0
     // debug load OpenGL Functions
-    auto func_ret = wglGetProcAddress("glGenBuffers");
-
-    if(func_ret == nullptr)
-    {
-        // func_ret = GetProcAddress()
-        putchar(10);
-    }
-
-    int vao;
-    glGenVertexArrays(1, reinterpret_cast<GLuint *>(&vao));
-
-        auto glModleInst = glInst;
-    if (GLADloadproc("glGenBuffers") == 0)
+    // �˺�������ȵ������Ĵ������֮��ſ��Ե��� 
+    // ������ִ���κ�OpenGL����֮ǰ������صĿ⺯�� 
+    if (gladLoadGLLoader(cWGLGetProcAddr) == 0)
     {
         return -1;
     }
 
-#endif
+    ShowWindow(hWnd, SW_SHOW);
 
+    // ��ȡOpenGL�汾 
     std::cout<<glGetString(GL_VERSION)<<std::endl;
 
-    while(GetMessage(&msg, hWnd, 0, 0))
+    Triangle obj;
+    obj.create(hDC, hRC);
+
+    while(GetMessage(&msg, nullptr, 0, 0))
     {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
+        obj.draw();
     }
 
-    wglMakeCurrent(NULL, NULL);
+    wglMakeCurrent(nullptr, nullptr);
     ReleaseDC(hWnd,hDC);
     wglDeleteContext(hRC);
     DestroyWindow(hWnd);
 
-    return msg.wParam;
-}
+    return static_cast<int>(msg.wParam);
+}                                                    
