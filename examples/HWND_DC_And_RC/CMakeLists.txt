@@ -1,5 +1,7 @@
 SET(target_ win32windows)
 
+set(CMAKE_CXX_STANDARD 17)
+
 SET(headers
         Win32WindowsManager.h
         triangle.h)

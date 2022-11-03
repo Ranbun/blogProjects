@@ -1,6 +1,5 @@
-#include <windows.h>
+#include <Windows.h>
 #include <glad/glad.h>
-#include <GL/gl.h>
 #include <iostream>
 #include "triangle.h"
 
@@ -11,14 +10,14 @@ HMODULE glInst;
 static void* cWGLGetProcAddr(const char *name)
 {
     auto ret = wglGetProcAddress(name);
-    if (ret == NULL)
+    if (ret == nullptr)
     {
         ret = GetProcAddress(glModleInst, name);
     }
     return ret;
 }
 
-void display()
+[[maybe_unused]] void display()
 {
 #if  0
     /* rotate a triangle around */
@@ -33,7 +32,8 @@ void display()
     glVertex3f(1, -1,0.0);
     glEnd();
     glFlush();
-#endif 
+#endif
+    // gluSphere(NULL,10,1,2);
 
 }
 
@@ -44,7 +44,7 @@ LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     switch(uMsg) {
         case WM_PAINT:
-            display();
+            // display();
             BeginPaint(hWnd, &ps);
             EndPaint(hWnd, &ps);
             return 0;
@@ -58,15 +58,17 @@ LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 case 27:			/* ESC key */
                     PostQuitMessage(0);
                     break;
+                case 0:
+                    break;
             }
             return 0;
-
         case WM_CLOSE:
             PostQuitMessage(0);
             return 0;
-    }
 
-    return DefWindowProc(hWnd, uMsg, wParam, lParam);
+        default:
+            return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    }
 }
 
 HWND
@@ -78,37 +80,37 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
     HWND        hWnd;
     WNDCLASS    wc;
     PIXELFORMATDESCRIPTOR pfd;
-    static HINSTANCE hInstance = 0;
+    static HINSTANCE hInstance = nullptr;
 
     /* only register the window class once - use hInstance as a flag. */
     if (!hInstance) {
-        hInstance = GetModuleHandle(NULL);  // 应用程序实例句柄
+        hInstance = GetModuleHandle(nullptr);  // 应用程序实例句柄
         wc.style         = CS_OWNDC;        // 为了保证每次获取的DC是同一个 
         wc.lpfnWndProc   = (WNDPROC)WindowProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
         wc.hInstance     = hInstance;
-        wc.hIcon         = LoadIcon(NULL, IDI_WINLOGO);
-        wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-        wc.hbrBackground = NULL;
-        wc.lpszMenuName  = NULL;
+        wc.hIcon         = LoadIcon(nullptr, IDI_WINLOGO);
+        wc.hCursor       = LoadCursor(nullptr, IDC_ARROW);
+        wc.hbrBackground = nullptr;
+        wc.lpszMenuName  = nullptr;
         wc.lpszClassName = "OpenGL";
 
         if (!RegisterClass(&wc)) {
-            MessageBox(NULL, "RegisterClass() failed:  "
+            MessageBox(nullptr, "RegisterClass() failed:  "
                              "Cannot register window class.", "Error", MB_OK);
-            return NULL;
+            return nullptr;
         }
     }
 
     hWnd = CreateWindow("OpenGL", title, WS_OVERLAPPEDWINDOW |
                                          WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-                        x, y, width, height, NULL, NULL, hInstance, NULL);
+                        x, y, width, height, nullptr, nullptr, hInstance, nullptr);
 
-    if (hWnd == NULL) {
-        MessageBox(NULL, "CreateWindow() failed:  Cannot create a window.",
+    if (hWnd == nullptr) {
+        MessageBox(nullptr, "CreateWindow() failed:  Cannot create a window.",
                    "Error", MB_OK);
-        return NULL;
+        return nullptr;
     }
 
     hDC = GetDC(hWnd);
@@ -122,15 +124,15 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
 
     pf = ChoosePixelFormat(hDC, &pfd);
     if (pf == 0) {
-        MessageBox(NULL, "ChoosePixelFormat() failed:  "
+        MessageBox(nullptr, "ChoosePixelFormat() failed:  "
                          "Cannot find a suitable pixel format.", "Error", MB_OK);
-        return 0;
+        return nullptr;
     }
 
     if (SetPixelFormat(hDC, pf, &pfd) == FALSE) {
-        MessageBox(NULL, "SetPixelFormat() failed:  "
+        MessageBox(nullptr, "SetPixelFormat() failed:  "
                          "Cannot set format specified.", "Error", MB_OK);
-        return 0;
+        return nullptr;
     }
 
     DescribePixelFormat(hDC, pf, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
@@ -149,9 +151,10 @@ int main()
 
     glInst = LoadLibraryA("opengl32.dll");
     glModleInst = glInst;
-                          
-    hWnd = CreateOpenGLWindow("OpenGL Window", 100, 100, 640, 480, PFD_TYPE_RGBA, 0);
-    if (hWnd == NULL)
+
+    char * windowName = "OpenGL Window";
+    hWnd = CreateOpenGLWindow(windowName, 100, 100, 640, 480, PFD_TYPE_RGBA, 0);
+    if (hWnd == nullptr)
         exit(1);
 
     hDC = GetDC(hWnd);
@@ -181,10 +184,10 @@ int main()
         obj.draw();
     }
 
-    wglMakeCurrent(NULL, NULL);
+    wglMakeCurrent(nullptr, nullptr);
     ReleaseDC(hWnd,hDC);
     wglDeleteContext(hRC);
     DestroyWindow(hWnd);
 
-    return msg.wParam;
+    return static_cast<int>(msg.wParam);
 }                                                    

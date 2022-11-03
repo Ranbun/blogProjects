@@ -24,13 +24,12 @@ namespace RenderSource
 
     // render data 
     float vertices[] = {
-   -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    0.0f,  0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
+    0.5f,  -0.5f, 0.0f,
+    0.0f,  0.5f,  0.0f,
     0.0f,  0.5f, 0.0f
     };
-
-};
+}
 
 class Triangle
 {
@@ -58,7 +57,7 @@ public:
 
     }
 
-    void draw()
+    void draw() const
     {
         glClearColor(0.4, 0.4, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -83,12 +82,12 @@ public:
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-            std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+            glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
+            std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED: " << infoLog << std::endl;
         }
         else
         {
-            std::cout << "SUCCESS::SHADER::VERTEX:\n" << std::endl;
+            std::cout << "SUCCESS::SHADER::VERTEX" << std::endl;
 
         }
 
@@ -100,12 +99,12 @@ public:
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-            std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+            glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
+            std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED: " << infoLog << std::endl;
         }
         else
         {
-            std::cout << "SUCCESS::SHADER::FRAGMENT:\n" << std::endl;
+            std::cout << "SUCCESS::SHADER::FRAGMENT" << std::endl;
 
         }
 
@@ -114,27 +113,25 @@ public:
         glAttachShader(shaderProgram, fragmentShader);
         glLinkProgram(shaderProgram);
         glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+
         if (!success)
         {
-            glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-            std::cout << "ERROR::SHADER::LINKEFAILED\n" << infoLog << std::endl;
+            glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
+            std::cout << "ERROR::PROGRAM::LINK FAILED: " << infoLog << std::endl;
         }
         else
         {
-            std::cout << "SUCCESS::SHADER::LINKE\n" << infoLog << std::endl;
+            std::cout << "SUCCESS::PROGRAM::LINK" << std::endl;
             glDeleteShader(vertexShader);
             glDeleteShader(fragmentShader);
         }
     }
-
 
 private:
     GLuint vao{0};
     GLuint vbo{0};
 
     GLuint shaderProgram{0};
-
 };
-
 
 #endif 
