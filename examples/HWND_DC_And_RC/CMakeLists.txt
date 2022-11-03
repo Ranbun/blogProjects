@@ -20,6 +20,6 @@ ADD_EXECUTABLE(
 )
 
 target_link_libraries(
-        ${target_}  PRIVATE  opengl32 glad::glad
+        ${target_}  PRIVATE  opengl32 glad::glad glu32
 )
 

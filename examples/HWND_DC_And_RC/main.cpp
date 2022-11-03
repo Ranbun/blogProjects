@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <iostream>
 #include "triangle.h"
+#include <gl/glu.h>
 
 HMODULE glModleInst;
 HMODULE glInst;
@@ -33,7 +34,12 @@ static void* cWGLGetProcAddr(const char *name)
     glEnd();
     glFlush();
 #endif
-    // gluSphere(NULL,10,1,2);
+
+#if 0
+    auto mySphere = gluNewQuadric();
+    gluQuadricDrawStyle(mySphere,GLU_LINE);
+    gluSphere(mySphere,1.0,12,12);
+#endif
 
 }
 
@@ -169,8 +175,6 @@ int main()
     wglMakeCurrent(hDC, hRC);
 
     // debug load OpenGL Functions
-    // �˺�������ȵ������Ĵ������֮��ſ��Ե��� 
-    // ������ִ���κ�OpenGL����֮ǰ������صĿ⺯�� 
     if (gladLoadGLLoader(cWGLGetProcAddr) == 0)
     {
         return -1;
@@ -178,7 +182,7 @@ int main()
 
     ShowWindow(hWnd, SW_SHOW);
 
-    // ��ȡOpenGL�汾 
+    // OpenGLb版本
     std::cout<<glGetString(GL_VERSION)<<std::endl;
 
     Triangle obj;
