@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <iostream>
 #include "triangle.h"
+#include <gl/glu.h>
 
 HMODULE glModleInst;
 HMODULE glInst;
@@ -33,7 +34,12 @@ static void* cWGLGetProcAddr(const char *name)
     glEnd();
     glFlush();
 #endif
-    // gluSphere(NULL,10,1,2);
+
+#if 0
+    auto mySphere = gluNewQuadric();
+    gluQuadricDrawStyle(mySphere,GLU_LINE);
+    gluSphere(mySphere,1.0,12,12);
+#endif
 
 }
 
@@ -84,8 +90,8 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
 
     /* only register the window class once - use hInstance as a flag. */
     if (!hInstance) {
-        hInstance = GetModuleHandle(nullptr);  // Ó¦ÓÃ³ÌÐòÊµÀý¾ä±ú
-        wc.style         = CS_OWNDC;        // ÎªÁË±£Ö¤Ã¿´Î»ñÈ¡µÄDCÊÇÍ¬Ò»¸ö 
+        hInstance = GetModuleHandle(nullptr);  // Ó¦ï¿½Ã³ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½
+        wc.style         = CS_OWNDC;        // Îªï¿½Ë±ï¿½Ö¤Ã¿ï¿½Î»ï¿½È¡ï¿½ï¿½DCï¿½ï¿½Í¬Ò»ï¿½ï¿½ 
         wc.lpfnWndProc   = (WNDPROC)WindowProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
@@ -144,6 +150,13 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
 
 int main()
 {
+
+    auto glInst = LoadLibraryA("opengl32.dll");
+    if (glInst == NULL)
+    {
+        return -1;
+    }
+
     HDC hDC;				/* device context */
     HGLRC hRC;				/* opengl context */
     HWND  hWnd;				/* window */
@@ -162,8 +175,6 @@ int main()
     wglMakeCurrent(hDC, hRC);
 
     // debug load OpenGL Functions
-    // ´Ëº¯Êý±ØÐëµÈµ½ÉÏÏÂÎÄ´´½¨Íê³ÉÖ®ºó²Å¿ÉÒÔµ÷ÓÃ 
-    // ±ØÐëÔÚÖ´ÐÐÈÎºÎOpenGL´úÂëÖ®Ç°µ÷ÓÃÏà¹ØµÄ¿âº¯Êý 
     if (gladLoadGLLoader(cWGLGetProcAddr) == 0)
     {
         return -1;
@@ -171,7 +182,7 @@ int main()
 
     ShowWindow(hWnd, SW_SHOW);
 
-    // »ñÈ¡OpenGL°æ±¾ 
+    // OpenGLbç‰ˆæœ¬
     std::cout<<glGetString(GL_VERSION)<<std::endl;
 
     Triangle obj;
