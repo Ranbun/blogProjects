@@ -90,8 +90,8 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
 
     /* only register the window class once - use hInstance as a flag. */
     if (!hInstance) {
-        hInstance = GetModuleHandle(nullptr);  // Ó¦ï¿½Ã³ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½
-        wc.style         = CS_OWNDC;        // Îªï¿½Ë±ï¿½Ö¤Ã¿ï¿½Î»ï¿½È¡ï¿½ï¿½DCï¿½ï¿½Í¬Ò»ï¿½ï¿½ 
+        hInstance = GetModuleHandle(nullptr);  // »ñÈ¡µ±Ç°µÄÄ£¿é
+        wc.style         = CS_OWNDC;        // ?´´½¨Opengl´°¿Ú±ØÐëÉèÖÃÎª´Ë
         wc.lpfnWndProc   = (WNDPROC)WindowProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
@@ -150,7 +150,6 @@ CreateOpenGLWindow(char* title, int x, int y, int width, int height,
 
 int main()
 {
-
     auto glInst = LoadLibraryA("opengl32.dll");
     if (glInst == NULL)
     {
@@ -182,7 +181,7 @@ int main()
 
     ShowWindow(hWnd, SW_SHOW);
 
-    // OpenGLbç‰ˆæœ¬
+    // OpenGLb°æ±¾
     std::cout<<glGetString(GL_VERSION)<<std::endl;
 
     Triangle obj;
